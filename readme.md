@@ -4,11 +4,14 @@
 
 Codon is a compiler that generates machine code from code that is syntactically similar to Python. It is not a direct replacement for Python's interpreter as some modules are not implemented (such as `csv`). Its performance is claimed to be on par with C/C++ and it supports native multithreading and is garbage-collected (https://docs.exaloop.io/codon/). Codon is licensed under Business Source Licence (BSL), which means it is free for non-production use.
 
-To assess its performance capabilities, a Docker image was made containing the latest version of Codon (v0.15) and Python (v3.11.2) to perform a data extraction task. A Python script created a CSV file with 1 million rows of synthetic data consisting of a phone number field and a free-text message field that may contain a vehicle registration (VRN). Three experiments were performed:
+To assess its performance capabilities, a Docker image was made containing the latest version of Codon (v0.15) and Python (v3.11.2) to perform a data extraction task. A Python script created a CSV file with synthetic data consisting of a phone number field and a free-text message field that may contain a vehicle registration (VRN). Four experiments were performed:
 
 1. Read the CSV file (without performing any processing of its contents);
 2. Read the CSV file and standardise the phone number field to create an internationalised number;
-3. Read the CSV file and extract VRNs from the free-text field using a regular expression.
+3. Read the CSV file and extract VRNs from the free-text field using a regular expression;
+4. Read the CSV file and train a Support Vector Machine (SVM) to predict whether a VRN is present in a message.
+
+Experiments 1 to 3 processed a dataset of 1 million rows, but experiment 4 had a smaller dataset of 100,000 rows due to the computational complexity of running the machine learning.
 
 A Bash script ran each experiment five times and execution times were calculated using the Linux tool `time`.
 
@@ -19,6 +22,7 @@ Execution times (in seconds) for the experiments using Python code were:
 | 1          | 3.007  | 3.248  | 3.324  | 3.357  | 2.886  | 3.164  |
 | 2          | 92.444 | 94.476 | 98.737 | 88.438 | 87.995 | 92.418 |
 | 3          | 16.579 | 17.387 | 16.686 | 16.974 | 16.445 | 16.814 |
+| 4          | 342.99 | 353.44 | 318.38 | 284.55 | 294.75 | 318.82 |
 
 Execution times (in seconds) for the experiments using Codon were:
 
@@ -27,18 +31,20 @@ Execution times (in seconds) for the experiments using Codon were:
 | 1          | 6.183   | 6.348   | 5.898  | 6.078  | 6.091  | 6.120   |
 | 2          | 118.304 | 108.363 | 96.183 | 99.474 | 95.368 | 103.538 |
 | 3          | 8.382   | 8.462   | 8.348  | 8.292  | 7.257  | 8.148   |
+| 4          | 290.95  | 284.66  | 281.31 | 280.93 | 281.17 | 283.80  |
 
 The mean experimental result times are summarised in the table below:
 
-| Experiment | Description               | Python | Codon   |
-| ---------- | ------------------------- | ------ | ------- |
-| 1          | Reading a file            | 3.164  | 6.120   |
-| 2          | Standardise phone numbers | 92.418 | 103.538 |
-| 3          | Extract VRNs              | 16.814 | 8.148   |
+| Experiment | Description                     | Python | Codon   | Codon speed up   |
+| ---------- | ------------------------------- | ------ | ------- | ---------------- |
+| 1          | Reading a file                  | 3.164  | 6.120   | Slower           |
+| 2          | Standardise phone numbers       | 92.418 | 103.538 | Slower           |
+| 3          | Extract VRNs                    | 16.814 | 8.148   | 2.1 times faster |
+| 4          | ML to predict presence of a VRN | 318.82 | 283.80  | 1.1 times faster |
 
 The fact that Codon is not a drop-in replacement for Python became apparent when the in-built Python module `csv` could not be used to read the synthetic dataset. A check for the existence of a file using `os.path.exists()` would not compile using Codon. Additionally, a minor change of `import phonenumbers` to `from python import phonenumbers` was required for Codon.
 
-The conclusion of the experiment is that Codon was slower than Python at reading a CSV file and also slower at executing code in the `phonenumbers` Python library. To get the speed improvement claimed the Python library dependencies would probably have to be coded in Codon. However, it was much faster at computing regular expressions. Codon's license is potentially too restrictive for wide-spread adoption in industry.
+The conclusion of the experiment is that Codon was slower than Python at reading a CSV file and also slower at executing code in the `phonenumbers` Python library. However, it was faster at computing regular expressions and training a SVM in Scikit-learn. Codon's license is potentially too restrictive for wide-spread adoption in industry.
 
 ## Create a Docker image and run a test case
 
@@ -86,3 +92,5 @@ Aborted (core dumped)
 ```
 
 The solution was to run `export CODON_PYTHON=/usr/local/lib/libpython3.so`
+
+- `1 * (len(extract_vrns(row['Message'])) > 0)` generated an error `error: unsupported operand type(s) for *: 'int' and 'bool'`
