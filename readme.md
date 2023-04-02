@@ -17,7 +17,7 @@ A Bash script ran each experiment five times and execution times were calculated
 
 Execution times (in seconds) for the experiments using the Python interpreter were:
 
-| Experiment | 1      | 2      | 3      | 4      | 5      | Mean   |
+| Experiment | Run 1  | Run 2  | Run 3  | Run 4  | Run 5  | Mean   |
 | ---------- | ------ | ------ | ------ | ------ | ------ | ------ |
 | 1          | 3.007  | 3.248  | 3.324  | 3.357  | 2.886  | 3.164  |
 | 2          | 92.444 | 94.476 | 98.737 | 88.438 | 87.995 | 92.418 |
@@ -26,7 +26,7 @@ Execution times (in seconds) for the experiments using the Python interpreter we
 
 Execution times (in seconds) for the experiments using Codon were:
 
-| Experiment | 1       | 2       | 3      | 4      | 5      | Mean    |
+| Experiment | Run 1   | Run 2   | Run 3  | Run 4  | Run 5  | Mean    |
 | ---------- | ------- | ------- | ------ | ------ | ------ | ------- |
 | 1          | 6.183   | 6.348   | 5.898  | 6.078  | 6.091  | 6.120   |
 | 2          | 118.304 | 108.363 | 96.183 | 99.474 | 95.368 | 103.538 |
@@ -44,7 +44,7 @@ The mean experimental result times are summarised in the table below:
 
 The fact that Codon is not a drop-in replacement for Python became apparent when the in-built Python module `csv` could not be used to read the synthetic dataset. A check for the existence of a file using `os.path.exists()` would not compile using Codon. Additionally, a minor change of `import phonenumbers` to `from python import phonenumbers` was required for Codon.
 
-The conclusion of the experiment is that Codon was slower than Python at reading a CSV file and also slower at executing code in the `phonenumbers` Python library. However, it was faster at computing regular expressions and training a SVM in Scikit-learn. Codon's license is potentially too restrictive for wide-spread adoption in industry.
+The conclusion of the experiment is that Codon was slower than Python at reading a CSV file and also slower at executing code in the `phonenumbers` Python library. However, it was 2.1 times faster at computing regular expressions and 1.1 times faster at training a SVM with Scikit-learn. Codon's license is potentially too restrictive for wide-spread adoption in industry though.
 
 ## Create a Docker image and run a test case
 
