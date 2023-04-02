@@ -3,6 +3,8 @@ import phonenumbers
 import re
 import sys
 
+from sklearn import svm
+
 # VRN regex pattern
 vrn_pattern = r"([A-Z]{2}[0-9]{2} [A-Z]{3})"
 vrn_regex = re.compile(vrn_pattern, re.IGNORECASE)
@@ -83,6 +85,38 @@ def experiment_3(filepath):
     print(f"Extracted {num_vrns} VRNs")
 
 
+def feature_vector(text):
+    """Returns a feature vector from a string."""
+
+    return [
+        len(text),                           # number of characters
+        sum([c.isnumeric() for c in text]),  # number of numbers
+        sum([c.isalpha() for c in text])     # number of letters
+    ]
+
+
+def experiment_4(filepath):
+    """Use machine learning to predict if a VRN will be present."""
+
+    num_rows = 0
+    X = []  # features
+    y = []  # labels
+
+    for row in read_dataset(filepath):
+        num_rows += 1
+        X.append(feature_vector(row['Message']))
+        y.append(1 * (len(extract_vrns(row['Message'])) > 0))
+
+    print(f"Read {num_rows} rows")
+
+    # Train the SVM classifier
+    clf = svm.SVC()
+    clf.fit(X, y)
+
+    # Show the prediction
+    print(clf.predict([[20, 17, 3]]))
+
+
 if __name__ == '__main__':
 
     # Get the experiment number to run from the command line
@@ -103,5 +137,7 @@ if __name__ == '__main__':
         experiment_2(dataset_filepath)
     elif experiment == 3:
         experiment_3(dataset_filepath)
+    elif experiment == 4:
+        experiment_4(dataset_filepath)
     else:
         print(f"Unknown experiment: {experiment}")
