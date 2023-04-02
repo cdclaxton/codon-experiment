@@ -4,7 +4,7 @@ FROM python:slim
 RUN apt-get update && apt-get -y upgrade
 
 # Install the C compiler and required OS programs
-RUN apt-get install -y curl gcc g++ zlib1g-dev
+RUN apt-get install -y curl gcc g++ zlib1g-dev vim
 
 # Create a working directory
 RUN mkdir /experiment
