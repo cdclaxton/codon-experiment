@@ -8,8 +8,8 @@ echo Building executable using Codon
 export CODON_PYTHON=/usr/local/lib/libpython3.so
 
 # Generate a dataset
-# echo Generating dataset ...
-# python data_generator.py 1000000
+echo Generating dataset ...
+python data_generator.py 1000000
 
 # Run Python experiments
 TIMEFORMAT=%R
