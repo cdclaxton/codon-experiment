@@ -15,7 +15,7 @@ Experiments 1 to 3 processed a dataset of 1 million rows, but experiment 4 had a
 
 A Bash script ran each experiment five times and execution times were calculated using the Linux tool `time`.
 
-Execution times (in seconds) for the experiments using Python code were:
+Execution times (in seconds) for the experiments using the Python interpreter were:
 
 | Experiment | 1      | 2      | 3      | 4      | 5      | Mean   |
 | ---------- | ------ | ------ | ------ | ------ | ------ | ------ |
