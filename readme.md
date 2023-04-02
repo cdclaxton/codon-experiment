@@ -35,12 +35,12 @@ Execution times (in seconds) for the experiments using Codon were:
 
 The mean experimental result times are summarised in the table below:
 
-| Experiment | Description                     | Python | Codon   | Codon speed up   |
-| ---------- | ------------------------------- | ------ | ------- | ---------------- |
-| 1          | Reading a file                  | 3.164  | 6.120   | Slower           |
-| 2          | Standardise phone numbers       | 92.418 | 103.538 | Slower           |
-| 3          | Extract VRNs                    | 16.814 | 8.148   | 2.1 times faster |
-| 4          | ML to predict presence of a VRN | 318.82 | 283.80  | 1.1 times faster |
+| Experiment | Description                     | Mean execution time in Python (s) | Mean execution time in Codon (s) | Codon speed up   |
+| ---------- | ------------------------------- | --------------------------------- | -------------------------------- | ---------------- |
+| 1          | Reading a file                  | 3.164                             | 6.120                            | Slower           |
+| 2          | Standardise phone numbers       | 92.418                            | 103.538                          | Slower           |
+| 3          | Extract VRNs                    | 16.814                            | 8.148                            | 2.1 times faster |
+| 4          | ML to predict presence of a VRN | 318.82                            | 283.80                           | 1.1 times faster |
 
 The fact that Codon is not a drop-in replacement for Python became apparent when the in-built Python module `csv` could not be used to read the synthetic dataset. A check for the existence of a file using `os.path.exists()` would not compile using Codon. Additionally, a minor change of `import phonenumbers` to `from python import phonenumbers` was required for Codon.
 
