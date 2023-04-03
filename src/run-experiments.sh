@@ -51,3 +51,23 @@ do
     time ./run_experiment_codon 4;
     echo "---------------------------------"
 done
+
+# Run PyPy experiments using the virtual environment
+python data_generator.py 1000000
+source my-pypy-env/bin/activate
+for i in {1..5}
+do
+    echo "Running PyPy experiments set $i"
+    time python run_experiment.py 1;
+    time python run_experiment.py 2;
+    time python run_experiment.py 3;
+    echo "---------------------------------"
+done
+
+python data_generator.py 100000
+for i in {1..5}
+do
+    echo "Running PyPy experiments set $i"
+    time python run_experiment.py 4;
+    echo "---------------------------------"
+done
