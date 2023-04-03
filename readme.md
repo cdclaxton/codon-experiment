@@ -4,7 +4,7 @@
 
 Codon is a compiler that generates machine code from code that is syntactically similar to Python. It is not a direct replacement for Python's interpreter as some modules are not implemented (such as `csv`). Its performance is claimed to be on par with C/C++ and it supports native multithreading and is garbage-collected (https://docs.exaloop.io/codon/). Codon is licensed under Business Source Licence (BSL), which means it is free for non-production use.
 
-To assess its performance capabilities, a Docker image was made containing the latest version of Codon (v0.15), the CPython interpreter (v3.11.2) and the PyPy interpreter (v7.3.11) to perform a data extraction task. A Python script created a CSV file with synthetic data consisting of a phone number field and a free-text message field that may contain a vehicle registration (VRN). Four experiments were performed:
+To assess its performance capabilities on single-threaded code, a Docker image was made containing the latest version of Codon (v0.15), the CPython interpreter (v3.11.2) and the PyPy interpreter (v7.3.11) to perform a data extraction task. A Python script created a CSV file with synthetic data consisting of a phone number field and a free-text message field that may contain a vehicle registration (VRN). Four experiments were performed:
 
 1. Read the CSV file (without performing any processing of its contents);
 2. Read the CSV file and standardise the phone number field to create an internationalised number;
